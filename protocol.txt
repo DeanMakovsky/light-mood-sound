@@ -1,0 +1,38 @@
+All u.int types are little-endian
+
+All packets have the form:
+	Frame	Frame Address	Protocol Header		Payload
+
+
+	Name		Bit size	Type	Descrip
+-----------------------------------------------------------------------------
+Frame
+	size		16			u.int	size of entire message (including this)
+	origin		2			u.int	must be 0
+	tagged		1			bool	Determines usage of the "Frame Address" _target field.  Addresses one or all devices.  For Device::GetService, this should be 1, and _target should be all zeros
+	Address		1			bool	Message includes a target address: must be one (1)
+	Protocol	12			u.int	must be 1024
+	source		32			u.int	source identifier: unique value sent by client, if non-zero it functions as a sequence number. If zero then the bulb responds with broadcast message
+
+Frame Address
+	target 		64			u.int 	6 byte mac address of device, or zero for all devices (see _tagged above in this case)
+	reserved	48			u.int8	all zeros
+	reserved	6			--		reserved (zero)
+	ack_requir	1			bool	acknowledgement message required from bulb.  Evokes a simple response
+	res_requir	1			bool	response message required.  Evokes a Light::StatePower message (more info than saying "yes I got the message")
+	sequence	8			u.int 	wrap around message seq. number.  Bulb will respond with this identical number
+
+Protocol Header
+	reserved	64			u.int 	reserved (zero)
+	type 		16			u.int 	Message type, determining payload type
+	reserved	16			--		reserved (zero)
+
+
+
+https://docs.python.org/3/library/struct.html 
+specifically,
+https://docs.python.org/3/library/struct.html#format-characters
+Python struct format strings:
+Frame 		   : <H2xss12sI
+Frame Address  : <
+Protocol Header: <
