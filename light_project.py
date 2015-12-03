@@ -7,7 +7,7 @@ import sys
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
-CHUNK = 1024
+CHUNK = 256
 INTERVAL = 5
 WINDOW = 30
 
@@ -54,7 +54,7 @@ def main():
 	stream = audio.open(format=FORMAT, channels=CHANNELS,
 	                rate=RATE, input=True,
 	                frames_per_buffer=CHUNK,
-	                input_device_index=pyaudio.paALSA)
+	                input_device_index=1)
 	
 	while aok:
 		frames = []
