@@ -64,9 +64,9 @@ class MoodEvent(object):
 		# find the latest mood that is longer than 1.5 seconds
 		for a_mood in moods:
 			if (a_mood['end'] - a_mood['start']) >= 1.5:
-				if latest_mood is None:
+				if self.latest_mood is None:
 					self.latest_mood = a_mood
-				elif a_mood['end'] > latest_mood['end']:
+				elif a_mood['end'] > self.latest_mood['end']:
 					self.latest_mood = a_mood
 		
 		return self.latest_mood
@@ -79,7 +79,7 @@ class MoodEvent(object):
 			self.get_mood()
 		return self.bpm
 
-me = MoodEvent('hot.wav')
+me = MoodEvent('file.mp3')
 me.submit()
 try :
 	me.retrieve_results()
