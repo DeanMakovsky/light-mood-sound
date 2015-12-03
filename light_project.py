@@ -62,8 +62,8 @@ def main():
 			frames.append(data)
 		frameSet.append(frames)
 		deleteOldFrames(frameSet)
+		global updating
 		if not updating:
-			global updating
 			updating = True
 			doInExternalThread(update,(audio,frameSet[:]))
 	
