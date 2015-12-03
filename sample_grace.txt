@@ -1,0 +1,36 @@
+{u'job_status': u'1', u'message': u'', u'features': u'{
+
+"timeline": {
+	"beat": [
+		{"strength": 0.016773337128902562, "time": 0.097000002861}, 
+		..., 
+		{"strength": 0.017493738897756028, "time": 19.061000824}
+	], 
+	
+	"segment": [
+		{"start": 0.097000002860999995, "end": 19.061000824000001, "id": 1, "label": "Unlabeled"}
+	], 
+
+	"mood": [
+		{"values": [
+			{"score": 57, "id": 48, "label": "Other"}, 
+			{"score": 40, "id": 57, "label": "Heartfelt Romantic Strength"}, 
+			{"score": 1, "id": 65, "label": "Soft Sensual / Intimate"}
+		], "start": 0.0, "end": 11.52}, 
+
+		{"values": [{"score": 54, "id": 48, "label": "Other"}, {"score": 43, "id": 57, "label": "Heartfelt Romantic Strength"}, {"score": 1, "id": 65, "label": "Soft Sensual / Intimate"}], "start": 0.72, "end": 12.24}, 
+
+		{"values": [{"score": 75, "id": 48, "label": "Other"}, {"score": 23, "id": 57, "label": "Heartfelt Romantic Strength"}, {"score": 1, "id": 65, "label": "Soft Sensual / Intimate"}], "start": 2.16, "end": 13.68}, 
+
+		{"values": [{"score": 85, "id": 48, "label": "Other"}, {"score": 13, "id": 57, "label": "Heartfelt Romantic Strength"}], "start": 2.88, "end": 14.4}, 
+
+		{"values": [{"score": 100, "id": 48, "label": "Other"}], "start": 4.32, "end": 15.84}, 
+
+		{"values": [{"score": 99, "id": 48, "label": "Other"}], "start": 5.04, "end": 16.56}
+	]
+}, 
+
+
+"meta": {"duration": 19.09, "bpm": 129.2, "audio_id": "06cddd564375b5524253c5b657bf6e10"}}', 
+
+u'api_version': u'1.0'}
