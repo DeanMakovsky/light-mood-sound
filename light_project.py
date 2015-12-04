@@ -50,6 +50,11 @@ def main():
 	audio = pyaudio.PyAudio()
 	frameSet = []
 
+	# figure out this index bullshit
+	for i in range(audio.get_device_count()):
+		dev = audio.get_device_info_by_index(i)
+		print((i,dev['name'],dev['maxInputChannels']))
+	
 	# start Recording
 	stream = audio.open(format=FORMAT, rate=RATE, input=True,
 			channels=CHANNELS, frames_per_buffer=CHUNK,)
