@@ -7,6 +7,7 @@ import sys
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
+CHUNK = 1024
 INTERVAL = 5
 WINDOW = 30
 
@@ -56,7 +57,9 @@ def main():
 	
 	# start Recording
 	stream = audio.open(format=FORMAT, rate=RATE, input=True,
-			channels=CHANNELS, input_device_index=2)
+			channels=CHANNELS, 
+	                frames_per_buffer=CHUNK,
+	                input_device_index=2)
 	
 	while aok:
 		frames = []
