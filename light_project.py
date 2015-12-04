@@ -42,8 +42,10 @@ def doInExternalThread(f, a):
 	t.start()
 
 def main():
+	global aok
 	aok = True
 	def sigintHandler(signal, frame):
+		global aok
 		aok = False
 	signal.signal(signal.SIGINT, sigintHandler)
 
