@@ -32,13 +32,9 @@ def deleteOldFrames(frameSet):
 	if len(frameSet) > WINDOW/INTERVAL:
 		del frameSet[:len(frameSet)-WINDOW/INTERVAL]
 
-def update(audio, frameSet):	
-	export(audio,frameSet)
-	# do GraceNote and Lightbulb stuff
-
-	# play audio for testing
+def playAudio(fn):
 	#open a wav format music  
-	f = wave.open(r"/usr/share/sounds/alsa/Rear_Center.wav","rb")  
+	f = wave.open(fn,"rb")  
 	#instantiate PyAudio  
 	p = pyaudio.PyAudio()  
 	#open stream  
@@ -60,6 +56,13 @@ def update(audio, frameSet):
 	
 	#close PyAudio  
 	p.terminate()  
+
+def update(audio, frameSet):	
+	export(audio,frameSet)
+	# do GraceNote and Lightbulb stuff
+
+	# play audio for testing
+	playAudio(FILENAME)
 	
 	global updating
 	updating = False
