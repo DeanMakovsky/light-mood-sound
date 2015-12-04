@@ -8,7 +8,7 @@ import os
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
-CHUNK = 2048
+CHUNK = 256
 INTERVAL = 1
 WINDOW = 30
 
