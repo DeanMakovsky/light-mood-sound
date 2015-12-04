@@ -94,9 +94,13 @@ def main():
 	
 	while aok:
 		frames = []
-		for i in range(0, int(RATE / CHUNK * INTERVAL)):
-			data = stream.read(CHUNK)
-			frames.append(data)
+		try:
+			for i in range(0, int(RATE / CHUNK * INTERVAL)):
+				data = stream.read(CHUNK)
+				frames.append(data)
+		except IOError:
+			print 'Encountered error while recording. Moving on and trying again.'
+			continue
 		frameSet.append(frames)
 		deleteOldFrames(frameSet)
 		global updating
