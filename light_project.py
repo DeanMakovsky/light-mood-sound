@@ -3,6 +3,7 @@ import wave
 import threading
 import signal
 import sys
+import os
 
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
