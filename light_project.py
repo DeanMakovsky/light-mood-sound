@@ -11,12 +11,14 @@ CHUNK = 256
 INTERVAL = 1
 WINDOW = 30
 
+FILENAME = "output.wav"
+
 updating = False
 aok = True
 
-def export(audio, frameSet, filename = 'file.wav'):
+def export(audio, frameSet):
 	# start writing
-	f = wave.open(filename, 'wb')
+	f = wave.open(FILENAME, 'wb')
 	f.setnchannels(CHANNELS)
 	f.setsampwidth(audio.get_sample_size(FORMAT))
 	f.setframerate(RATE)
@@ -34,6 +36,31 @@ def update(audio, frameSet):
 	export(audio,frameSet)
 	# do GraceNote and Lightbulb stuff
 
+	# play audio for testing
+	#open a wav format music  
+	f = wave.open(r"/usr/share/sounds/alsa/Rear_Center.wav","rb")  
+	#instantiate PyAudio  
+	p = pyaudio.PyAudio()  
+	#open stream  
+	stream = p.open(format = p.get_format_from_width(f.getsampwidth()),  
+	                channels = f.getnchannels(),  
+	                rate = f.getframerate(),  
+	                output = True)  
+	#read data  
+	data = f.readframes(CHUNK)  
+	
+	#paly stream  
+	while data != '':  
+	    stream.write(data)  
+	    data = f.readframes(CHUNK)
+	
+	#stop stream  
+	stream.stop_stream()  
+	stream.close()  
+	
+	#close PyAudio  
+	p.terminate()  
+	
 	global updating
 	updating = False
 
@@ -77,6 +104,9 @@ def main():
 	stream.stop_stream()
 	stream.close()
 	audio.terminate()
+
+	# remove file we were working with
+	os.remove(FILENAME)
 
 	# exit
 	sys.exit(0)
