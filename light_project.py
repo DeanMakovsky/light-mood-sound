@@ -8,10 +8,11 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
 CHUNK = 256
-INTERVAL = 5
+INTERVAL = 1
 WINDOW = 30
 
 updating = False
+aok = True
 
 def export(audio, frameSet, filename = 'file.wav'):
 	# start writing
@@ -42,8 +43,6 @@ def doInExternalThread(f, a):
 	t.start()
 
 def main():
-	global aok
-	aok = True
 	def sigintHandler(signal, frame):
 		global aok
 		aok = False
@@ -52,7 +51,7 @@ def main():
 	audio = pyaudio.PyAudio()
 	frameSet = []
 
-	# figure out this index bullshit
+	# print out input devices and corresponding indeces
 	for i in range(audio.get_device_count()):
 		dev = audio.get_device_info_by_index(i)
 		print((i,dev['name'],dev['maxInputChannels']))
@@ -60,8 +59,7 @@ def main():
 	# start Recording
 	stream = audio.open(format=FORMAT, rate=RATE, input=True,
 			channels=CHANNELS, 
-	                frames_per_buffer=CHUNK,
-	                input_device_index=2)
+	                frames_per_buffer=CHUNK)
 	
 	while aok:
 		frames = []
