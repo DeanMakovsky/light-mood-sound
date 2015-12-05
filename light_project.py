@@ -4,6 +4,7 @@ import threading
 import signal
 import sys
 import os
+import collections
 
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
@@ -11,11 +12,13 @@ RATE = 44100
 CHUNK = 256
 INTERVAL = 1
 WINDOW = 30
+CONSECUTIVE_ERROR_LIMIT = 150
 
 FILENAME = "output.wav"
 
-updating = False
 aok = True
+audio = pyaudio.PyAudio()
+frameSet = collections.deque((WINDOW/INTERVAL)*[],(WINDOW/INTERVAL))
 
 def export(audio, frameSet):
 	# start writing
@@ -28,10 +31,6 @@ def export(audio, frameSet):
 		f.writeframes(b''.join(frames))
 	# finish writing
 	f.close()
-
-def deleteOldFrames(frameSet):
-	if len(frameSet) > WINDOW/INTERVAL:
-		del frameSet[:len(frameSet)-WINDOW/INTERVAL]
 
 def playAudio(fn):
 	#open a wav format music  
@@ -58,18 +57,17 @@ def playAudio(fn):
 	#close PyAudio  
 	p.terminate()  
 
-def update(audio, frameSet):	
-	export(audio,frameSet)
-	# do GraceNote and Lightbulb stuff
+def update():
+	while aok:
+		fs = list(frameSet)
+		export(audio,frameSet)
+		# do GraceNote and Lightbulb stuff
 
-	# play audio for testing
-	playAudio(FILENAME)
-	
-	global updating
-	updating = False
+		# play audio for testing
+		playAudio(FILENAME)
 
-def doInExternalThread(f, a):
-	t = threading.Thread(target = f, args = a)
+def doInExternalThread(func):
+	t = threading.Thread(target = func)
 	t.daemon = True
 	t.start()
 
@@ -79,9 +77,6 @@ def main():
 		aok = False
 	signal.signal(signal.SIGINT, sigintHandler)
 
-	audio = pyaudio.PyAudio()
-	frameSet = []
-
 	# print out input devices and corresponding indeces
 	for i in range(audio.get_device_count()):
 		dev = audio.get_device_info_by_index(i)
@@ -90,23 +85,26 @@ def main():
 	# start Recording
 	stream = audio.open(format=FORMAT, rate=RATE, input=True,
 			channels=CHANNELS, 
-	                frames_per_buffer=CHUNK)
-	
+	        frames_per_buffer=CHUNK)
+
+	doInExternalThread(update)
+
+	consecutiveErrors = 0
 	while aok:
 		frames = []
 		try:
 			for i in range(0, int(RATE / CHUNK * INTERVAL)):
 				data = stream.read(CHUNK)
 				frames.append(data)
+			consecutiveErrors = 0
 		except IOError:
+			consecutiveErrors += 1
+			if consecutiveErrors > CONSECUTIVE_ERROR_LIMIT:
+				print 'Too many consecutive errors. Exiting program.'
+				break
 			print 'Encountered error while recording. Moving on and trying again.'
 			continue
 		frameSet.append(frames)
-		deleteOldFrames(frameSet)
-		global updating
-		if not updating:
-			updating = True
-			doInExternalThread(update,(audio,frameSet[:]))
 	
 	# stop Recording
 	stream.stop_stream()
