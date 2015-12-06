@@ -18,17 +18,17 @@ FILENAME = "output.wav"
 
 aok = True
 audio = pyaudio.PyAudio()
-frameSet = collections.deque((WINDOW/INTERVAL)*[],(WINDOW/INTERVAL))
+NUM_FRAMES = RATE / CHUNK * WINDOW
+frames = collections.deque(NUM_FRAMES*[''],NUM_FRAMES)
 
-def export(audio, frameSet):
+def export(dataList):
 	# start writing
 	f = wave.open(FILENAME, 'wb')
 	f.setnchannels(CHANNELS)
 	f.setsampwidth(audio.get_sample_size(FORMAT))
 	f.setframerate(RATE)
 	# write data to wave file
-	for frames in frameSet:
-		f.writeframes(b''.join(frames))
+	f.writeframes(b''.join(dataList))
 	# finish writing
 	f.close()
 
@@ -59,8 +59,8 @@ def playAudio(fn):
 
 def update():
 	while aok:
-		fs = list(frameSet)
-		export(audio,frameSet)
+		dataList = list(frames)
+		export(dataList)
 		# do GraceNote and Lightbulb stuff
 
 		# play audio for testing
@@ -91,7 +91,6 @@ def main():
 
 	consecutiveErrors = 0
 	while aok:
-		frames = []
 		try:
 			for i in range(0, int(RATE / CHUNK * INTERVAL)):
 				data = stream.read(CHUNK)
@@ -104,7 +103,6 @@ def main():
 				break
 			print 'Encountered error while recording. Moving on and trying again.'
 			continue
-		frameSet.append(frames)
 	
 	# stop Recording
 	stream.stop_stream()
