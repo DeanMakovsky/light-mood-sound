@@ -1,3 +1,9 @@
+* learn wireshark (filters)
+* write bulb code in C
+* what does little-endian byte order mean for 12-bit length fields
+* pcap the messages we want to the bulb then resend them
+
+
 All u.int types are little-endian
 
 All packets have the form:

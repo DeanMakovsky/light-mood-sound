@@ -109,4 +109,5 @@ def constructBody(hsb, ttime):
 	mssg.append('uintle:32='+str(ttime))
 	return mssg
 
-print constructBody((0,65535,52428), TRANS_TIME)
+if __name__ == "__main__":
+	print constructBody((0,65535,52428), TRANS_TIME)
