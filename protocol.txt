@@ -29,10 +29,12 @@ Protocol Header
 
 
 
+
+THESE ARE WRONG:
 https://docs.python.org/3/library/struct.html 
 specifically,
 https://docs.python.org/3/library/struct.html#format-characters
 Python struct format strings:
-Frame 		   : <H2xss12sI
-Frame Address  : <
-Protocol Header: <
+Frame 		   : <H2sss12sI
+Frame Address  : <Q6x6sssB			(the 6s is blank)
+Protocol Header: <8xH2x
