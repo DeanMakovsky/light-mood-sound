@@ -7,7 +7,7 @@ All packets have the form:
 	Name		Bit size	Type	Descrip
 -----------------------------------------------------------------------------
 Frame
-	size		16			u.int	size of entire message (including this)
+	size		16			u.int	size (bytes) of entire message (including this)
 	origin		2			u.int	must be 0
 	tagged		1			bool	Determines usage of the "Frame Address" _target field.  Addresses one or all devices.  For Device::GetService, this should be 1, and _target should be all zeros
 	Address		1			bool	Message includes a target address: must be one (1)
