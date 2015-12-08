@@ -1,4 +1,7 @@
 import bitstring
+from bitstring import BitArray
+from mood import constructBody
+
 
 # Frame
 #size
@@ -22,6 +25,19 @@ _type     = BitArray(uintle=102, length=16)
 reserved3 = BitArray(uintle=0,	 length=16)
 
 # PayLoad
-reserved4 = BitArray(uintle=0, length=8)
+# reserved4 = BitArray(uintle=0, length=8)
 
-duration  = BitArray(uintle=)
+# duration  = BitArray(uintle=)
+
+temp = origin + tagged + addressable + protocol + source \
+	+ target + reserved0 + reserved1 + ack_required + res_required + sequence \
+	+ reserved2 + _type + reserved3 + constructBody( (0,65535, 52428) , 500 )
+
+size = BitArray(uintle=len(temp + 16)/8, length = 16)
+
+toSend = size + temp
+
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+s.sendto(toSend.bytes,("255.255.255.255", 56700))
