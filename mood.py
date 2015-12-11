@@ -106,6 +106,7 @@ def constructBody(hsb, ttime):
 	mssg.append('uintle:16='+str(hsb[0]))
 	mssg.append('uintle:16='+str(hsb[1]))
 	mssg.append('uintle:16='+str(hsb[2]))
+	mssg.append('uintle:16='+str(3500))
 	mssg.append('uintle:32='+str(ttime))
 	return mssg
 
