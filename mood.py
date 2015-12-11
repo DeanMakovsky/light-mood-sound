@@ -6,6 +6,22 @@ song2mood=dict()
 mood2color=dict()
 color2hsb=dict()
 
+def grace_to_mood(text):
+	if text not in song2mood:
+		print "Not found: " + text
+		return "calm"
+	return song2mood[text]
+
+def mood_to_color(text):
+	if text not in mood2color:
+		print "Big Error!!!", text
+	return mood2color[text]
+
+def color_to_hsb(text):
+	if text not in color2hsb:
+		print "Bigger Error!!!", text
+	return color2hsb[text]
+
 
 song2mood["Arousing / Energizing Groove"]="exciting"
 song2mood["Arrogant / Attitude / Defiant"]="defiant"
@@ -99,16 +115,8 @@ color2hsb["red"]=0,65535,52428
 color2hsb["purpleblue"]=0,65535,52428
 color2hsb["blue"]=0,65535,52428
 
-def constructBody(hsb, ttime):
-	"constructs message body bitstring for packet"
-	mssg = BitArray()
-	mssg.append('uintle:8=0')
-	mssg.append('uintle:16='+str(hsb[0]))
-	mssg.append('uintle:16='+str(hsb[1]))
-	mssg.append('uintle:16='+str(hsb[2]))
-	mssg.append('uintle:16='+str(3500))
-	mssg.append('uintle:32='+str(ttime))
-	return mssg
+
 
 if __name__ == "__main__":
-	print constructBody((0,65535,52428), TRANS_TIME)
+	# print constructBody((0,65535,52428), TRANS_TIME)
+	pass

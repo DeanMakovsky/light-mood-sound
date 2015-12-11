@@ -1,8 +1,11 @@
 import bitstring
 from bitstring import BitArray
-from mood import constructBody
 
-def make_frame():
+
+DELAY = 10
+KELVIN = 3500
+
+def make_frame():  # and frame address
 	# Frame
 	#size # 2 bytes
 	# origin      = BitArray(uint=0,	length=2)
@@ -47,7 +50,7 @@ def make_power(level):
 	toSend = size + temp
 	return toSend
 
-def make_color(hue, sat, bright):
+def make_color(hue, sat, bright, kelvin):
 	# Protocol header
 	reserved2 = BitArray(uintle=0,	 length=64)
 	# _type     = BitArray(uintle=102, length=16)  # set color
@@ -57,7 +60,7 @@ def make_color(hue, sat, bright):
 	# PayLoad
 	# reserved4 = BitArray(uintle=0, length=8)
 	# duration  = BitArray(uintle=)
-	payload = constructBody((hue, sat, bright), 500)
+	payload = constructBody((hue, sat, bright), DELAY, kelvin)
 
 	temp = make_frame() + reserved2 + _type + reserved3
 
@@ -67,6 +70,17 @@ def make_color(hue, sat, bright):
 
 	toSend = size + temp
 	return toSend
+
+def constructBody(hsb, ttime, kelvin):
+	"constructs message body bitstring for packet"
+	mssg = BitArray()
+	mssg.append('uintle:8=0')
+	mssg.append('uintle:16='+str(hsb[0]))
+	mssg.append('uintle:16='+str(hsb[1]))
+	mssg.append('uintle:16='+str(hsb[2]))
+	mssg.append('uintle:16='+str(kelvin))
+	mssg.append('uintle:32='+str(ttime))
+	return mssg
 
 # toSend = BitArray('0x240000342855fb6600000000000000000000000000000100000000000000000036000000')
 # 2600003400000000000000000000000000000000000000000000000000000000150000000000
@@ -81,14 +95,27 @@ import time
 
 theip = "255.255.255.255"
 
-toSend = make_power(0)
-s.sendto(toSend.bytes,(theip, 56700))
-time.sleep(5)
-toSend = make_power(65535)
-s.sendto(toSend.bytes,(theip, 56700))
-time.sleep(5)
-toSend = make_power(0)
-s.sendto(toSend.bytes,(theip, 56700))
-time.sleep(5)
-toSend = make_power(65535)
-s.sendto(toSend.bytes,(theip, 56700))
+from random import random
+
+values = [
+	# (0,0,32000),
+	# (2000,0,32000)
+	# (0,65535,65535)
+]
+
+i = 2500
+while i <= 9000:
+	values.append( (0,50000,20000, i) )
+	i += 500
+
+
+for i in values:
+	# toSend = make_color(int(random() * 65535) , int(random() * 65535) , int(random() * 65535) )
+	print("sending: ", i)
+	toSend = make_color( *i )
+	s.sendto(toSend.bytes,(theip, 56700))
+	time.sleep(0.75)
+
+	# toSend = make_power(65535)
+	# s.sendto(toSend.bytes,(theip, 56700))
+	# time.sleep(2)
