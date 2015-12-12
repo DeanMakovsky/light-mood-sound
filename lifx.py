@@ -95,12 +95,13 @@ theip = "255.255.255.255"
 def setBulbColor(hue,saturation,brightness,kelvin):
 	toSend = make_color(hue,saturation,brightness,kelvin)
 	s.sendto(toSend.bytes,(theip, 56700))
+	print hue,saturation,brightness,kelvin
 
 
 
 if __name__ == "__main__":
 	import time
-	
+
 	from random import random
 
 	values = [
