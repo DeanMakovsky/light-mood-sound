@@ -11,7 +11,7 @@ urls = (
 render = web.template.render('')
 
 class index:
-    def GET(self, name):
+    def GET(self):
         return render.index()
 
 class colorme:
