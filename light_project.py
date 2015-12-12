@@ -71,8 +71,6 @@ def gracenote_receive_thread(**kwargs):
 		
 def update():
 	while aok:
-		print 'we be tryin'
-
 		dataList = list(frames)
 
 		# Don't bother with GraceNote unless there are
