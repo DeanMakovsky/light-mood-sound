@@ -86,36 +86,42 @@ def constructBody(hsb, ttime, kelvin):
 # 2600003400000000000000000000000000000000000000000000000000000000150000000000
 # 2600003400000000000000000000000000000000000000000000000000000000150000000100
 
-
 import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
-import time
-
 theip = "255.255.255.255"
 
-from random import random
-
-values = [
-	# (0,0,32000),
-	# (2000,0,32000)
-	# (0,65535,65535)
-]
-
-i = 2500
-while i <= 9000:
-	values.append( (0,50000,20000, i) )
-	i += 500
-
-
-for i in values:
-	# toSend = make_color(int(random() * 65535) , int(random() * 65535) , int(random() * 65535) )
-	print("sending: ", i)
-	toSend = make_color( *i )
+def setBulbColor(hue,saturation,brightness,kelvin):
+	toSend = make_color(hue,saturation,brightness,kelvin)
 	s.sendto(toSend.bytes,(theip, 56700))
-	time.sleep(0.75)
 
-	# toSend = make_power(65535)
-	# s.sendto(toSend.bytes,(theip, 56700))
-	# time.sleep(2)
+
+
+if __name__ == "__main__":
+	import time
+	
+	from random import random
+
+	values = [
+		# (0,0,32000),
+		# (2000,0,32000)
+		# (0,65535,65535)
+	]
+
+	i = 2500
+	while i <= 9000:
+		values.append( (0,50000,20000, i) )
+		i += 500
+
+
+	for i in values:
+		# toSend = make_color(int(random() * 65535) , int(random() * 65535) , int(random() * 65535) )
+		print("sending: ", i)
+		toSend = make_color( *i )
+		s.sendto(toSend.bytes,(theip, 56700))
+		time.sleep(0.75)
+
+		# toSend = make_power(65535)
+		# s.sendto(toSend.bytes,(theip, 56700))
+		# time.sleep(2)

@@ -74,6 +74,7 @@ class MoodEvent(object):
 		return self.latest_mood
 
 	def get_mood_label(self):
+		print self.get_mood()
 		return self.get_mood()['values'][0]['label']
 
 	def get_bpm(self):

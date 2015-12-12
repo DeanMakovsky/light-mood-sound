@@ -8,14 +8,15 @@ import sys
 import os
 import collections
 from gracenote import MoodEvent
-
+from mood import grace_to_hsb
+from lifx import setBulbColor
 
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
 CHUNK = 256
 INTERVAL = 1
-WINDOW = 30
+WINDOW = 25
 MIN_WINDOW = 5
 CONSECUTIVE_ERROR_LIMIT = 150
 
@@ -27,7 +28,6 @@ NUM_FRAMES = RATE / CHUNK * WINDOW
 MIN_NUM_FRAMES = RATE / CHUNK * MIN_WINDOW
 frames = collections.deque([],NUM_FRAMES)
 lastUpdateTimeStamp = datetime.now()
-time_lock = threading.Lock()
 
 def export(dataList):
 	# start writing
@@ -66,23 +66,8 @@ def playAudio(fn):
 	p.terminate()  
 
 def gracenote_receive_thread(**kwargs):
-	global lastUpdateTimeStamp
+	
 	me = kwargs['MoodEvent']
-	timeStamp = datetime.now()
-	try :
-		me.retrieve_results()
-		with time_lock:
-			if timeStamp < lastUpdateTimeStamp:
-				use_this = False
-			else:
-				lastUpdateTimeStamp = timeStamp
-				use_this = True
-		if not use_this:
-			return
-	except ValueError as e:
-		print e, 'with', me.filename
-		return
-	print me.get_bpm(), me.get_mood_label()
 		
 def update():
 	while aok:
@@ -99,7 +84,23 @@ def update():
 		# do GraceNote and Lightbulb stuff
 		me = MoodEvent(FILENAME)
 		me.submit()
-		doInExternalThread(gracenote_receive_thread,MoodEvent=me)
+
+		global lastUpdateTimeStamp
+		timeStamp = datetime.now()
+		try :
+			me.retrieve_results()
+			if timeStamp < lastUpdateTimeStamp:
+				continue
+		except ValueError as e:
+			print e, 'with', me.filename
+			continue
+		lastUpdateTimeStamp = timeStamp
+		print me.get_bpm(), me.get_mood_label()
+
+		hsb = grace_to_hsb(me.get_mood_label())
+
+		setBulbColor(*hsb)
+
 		# play audio for testing
 		# playAudio(FILENAME)
 

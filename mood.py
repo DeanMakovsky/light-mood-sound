@@ -6,6 +6,9 @@ song2mood=dict()
 mood2color=dict()
 color2hsb=dict()
 
+def grace_to_hsb(text):
+	return color_to_hsb(mood_to_color(grace_to_mood(text)))
+
 def grace_to_mood(text):
 	if text not in song2mood:
 		print "Not found: " + text
@@ -14,7 +17,7 @@ def grace_to_mood(text):
 
 def mood_to_color(text):
 	if text not in mood2color:
-		print "Big Error!!!", text
+		print "Big Error!!!", text, len(text)
 	return mood2color[text]
 
 def color_to_hsb(text):
@@ -105,15 +108,17 @@ mood2color["powerful"]="red"
 mood2color["protective"]="red"
 mood2color["secure"]="blue"
 mood2color["tender"]="blue"
+mood2color[""]=""
 
-color2hsb["green"]=0,65535,52428
-color2hsb["yellow"]=0,65535,52428
-color2hsb["redorange"]=0,65535,52428
-color2hsb["purple"]=0,65535,52428
-color2hsb["orange"]=0,65535,52428
-color2hsb["red"]=0,65535,52428
-color2hsb["purpleblue"]=0,65535,52428
-color2hsb["blue"]=0,65535,52428
+color2hsb["green"]=0,65535,52428,2500
+color2hsb["yellow"]=0,65535,52428,3000
+color2hsb["redorange"]=0,65535,52428,3500
+color2hsb["purple"]=0,65535,52428,4000
+color2hsb["orange"]=0,65535,52428,4500
+color2hsb["red"]=0,65535,52428,5000
+color2hsb["purpleblue"]=0,65535,52428,5500
+color2hsb["blue"]=0,65535,52428,9000
+color2hsb[""]=1200,35005,30028,9000
 
 
 
