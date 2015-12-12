@@ -1,3 +1,5 @@
+import time
+from datetime import datetime
 import pyaudio
 import wave
 import threading
@@ -24,6 +26,8 @@ audio = pyaudio.PyAudio()
 NUM_FRAMES = RATE / CHUNK * WINDOW
 MIN_NUM_FRAMES = RATE / CHUNK * MIN_WINDOW
 frames = collections.deque([],NUM_FRAMES)
+lastUpdateTimeStamp = datetime.now()
+time_lock = threading.Lock()
 
 def export(dataList):
 	# start writing
@@ -61,30 +65,46 @@ def playAudio(fn):
 	#close PyAudio  
 	p.terminate()  
 
+def gracenote_receive_thread(**kwargs):
+	global lastUpdateTimeStamp
+	me = kwargs['MoodEvent']
+	timeStamp = datetime.now()
+	try :
+		me.retrieve_results()
+		with time_lock:
+			if timeStamp < lastUpdateTimeStamp:
+				use_this = False
+			else:
+				lastUpdateTimeStamp = timeStamp
+				use_this = True
+		if not use_this:
+			return
+	except ValueError as e:
+		print e, 'with', me.filename
+		return
+	print me.get_bpm(), me.get_mood_label()
+		
 def update():
 	while aok:
+		print 'we be tryin'
+
 		dataList = list(frames)
 
 		# Don't bother with GraceNote unless there are
 		# MIN_WINDOW seconds or more of audio
 		if len(dataList) < MIN_NUM_FRAMES:
-			continue
+			time.sleep(0.1)
 
 		export(dataList)
 		# do GraceNote and Lightbulb stuff
 		me = MoodEvent(FILENAME)
 		me.submit()
-		try :
-			me.retrieve_results()
-			print "Got results"
-		except ValueError as e:
-			print e, 'with', me.filename
-		print me.get_bpm(), me.get_mood_label()
+		doInExternalThread(gracenote_receive_thread,MoodEvent=me)
 		# play audio for testing
 		# playAudio(FILENAME)
 
-def doInExternalThread(func):
-	t = threading.Thread(target = func)
+def doInExternalThread(func, **kwargs):
+	t = threading.Thread(target = func, kwargs = kwargs)
 	t.daemon = True
 	t.start()
 

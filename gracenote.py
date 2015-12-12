@@ -32,7 +32,7 @@ class MoodEvent(object):
 			return False
 
 		data = req.json()
-		print data
+		# print data
 		if data['job_status'] == '1':
 			# features = data['features']
 			# print features['meta']['bpm']
