@@ -72,20 +72,6 @@ HSBToRGB = function (inh, ins, inb) {
     return { r: Math.round(rgb.r), g: Math.round(rgb.g), b: Math.round(rgb.b) };
 }
 
-function hexFromRGB(r, g, b) {
-    var haxarr = [
-      r.toString( 16 ),
-      g.toString( 16 ),
-      b.toString( 16 )
-    ];
-    $.each( haxarr, function( nr, val ) {
-      if ( val.length === 1 ) {
-        haxarr[ nr ] = "0" + val;
-      }
-    });
-    return (haxarr[0].toString()+haxarr[1].toString()+haxarr[2].toString()).toUpperCase());
-  }
-
 function slideChange() {
   var hv = $("#hslider").slider("value");
   var sv = $("#sslider").slider("value");
@@ -97,10 +83,10 @@ function slideChange() {
   $("#kv").text("K:"+kv);
 
   var rgbtext = HSBToRGB((hv*359/65535), (sv*100/65535), (bv*100/65535));
-  var hextext = hexFromRGB(rgbtext.r, rgbtext.g, rgbtext.b);
+  //var hextext = hexFromRGB(rgbtext.r, rgbtext.g, rgbtext.b);
 
-  $("#swath").css("background-color", "#"+hextext);
-  $("swath").text("#"+hexFromRGB(rgbtext.r, rgbtext.g, rgbtext.b));
+  //$("#swath").css("background-color", "#"+hextext);
+  //$("swath").text("#"+hexFromRGB(rgbtext.r, rgbtext.g, rgbtext.b));
   var myurl = "http://localhost/color?h="+hv+"&s="+sv+"&b="+bv+"&k="+kv;
   $.post(myurl, function(data) {alert("suggess")});
 
