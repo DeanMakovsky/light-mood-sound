@@ -79,12 +79,13 @@ class MoodEvent(object):
 			self.get_mood()
 		return self.bpm
 
-me = MoodEvent('file.mp3')
-me.submit()
-try :
-	me.retrieve_results()
-except ValueError as e:
-	print e, 'with', me.filename
-	import sys
-	sys.exit(1)
-print me.get_bpm(), me.get_mood_label()
+if __name__ == "__main__":
+	me = MoodEvent('file.mp3')
+	me.submit()
+	try :
+		me.retrieve_results()
+	except ValueError as e:
+		print e, 'with', me.filename
+		import sys
+		sys.exit(1)
+	print me.get_bpm(), me.get_mood_label()
