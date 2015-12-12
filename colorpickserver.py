@@ -11,7 +11,7 @@ urls = (
 class colorme:
     def GET(self):
         data=web.input();
-        setBulbColor(data.h, data.s, data.b, data.k)
+        lifx.setBulbColor(data.h, data.s, data.b, data.k)
 
 
 

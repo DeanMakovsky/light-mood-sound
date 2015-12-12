@@ -101,7 +101,8 @@ function slideChange() {
 
   $("#swath").css("background-color", "#"+hextext);
   $("swath").text("#"+hexFromRGB(rgbtext.r, rgbtext.g, rgbtext.b));
-  $.post( "172.27.99.15:80/color?h="+hv+"&s="+sv+"&b="bv+"&k="+kv } );
+  var myurl = "http://localhost/color?h="+hv+"&s="+sv+"&b="+bv+"&k="+kv;
+  $.post(myurl, function(data) {alert("suggess")});
 
 }
 </script>
