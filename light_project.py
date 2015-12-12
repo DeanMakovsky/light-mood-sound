@@ -14,6 +14,7 @@ RATE = 44100
 CHUNK = 256
 INTERVAL = 1
 WINDOW = 30
+MIN_WINDOW = 5
 CONSECUTIVE_ERROR_LIMIT = 150
 
 FILENAME = "output.wav"
@@ -21,7 +22,8 @@ FILENAME = "output.wav"
 aok = True
 audio = pyaudio.PyAudio()
 NUM_FRAMES = RATE / CHUNK * WINDOW
-frames = collections.deque(NUM_FRAMES*[''],NUM_FRAMES)
+MIN_NUM_FRAMES = RATE / CHUNK * MIN_WINDOW
+frames = collections.deque([],NUM_FRAMES)
 
 def export(dataList):
 	# start writing
@@ -62,6 +64,12 @@ def playAudio(fn):
 def update():
 	while aok:
 		dataList = list(frames)
+
+		# Don't bother with GraceNote unless there are
+		# MIN_WINDOW seconds or more of audio
+		if len(dataList) < MIN_NUM_FRAMES:
+			continue
+
 		export(dataList)
 		# do GraceNote and Lightbulb stuff
 		me = MoodEvent(FILENAME)
