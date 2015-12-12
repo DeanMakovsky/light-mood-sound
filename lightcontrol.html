@@ -1,0 +1,118 @@
+<!-- LIght control -->
+<link href="resources/jquery-ui.min.css" rel="stylesheet">
+<style>
+body {
+  font-size: 20px;
+}
+
+#container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+}
+
+#swath {
+  width: 100%;
+  height: 100px;
+}
+</style>
+<script src="resources/jquery-1.11.3.min.js"></script>
+<script src="resources/jquery-ui.min.js"></script>
+<script>
+$(document).ready(function() {
+  $("#hslider").slider({
+    max:65535,
+    min: 0,
+    slide: slideChange,
+    change: slideChange
+  });
+  $("#sslider").slider({
+    max:65535,
+    min: 0,
+    slide: slideChange,
+    change: slideChange
+  });
+  $("#bslider").slider({
+    max:65535,
+    min: 0,
+    slide: slideChange,
+    change: slideChange
+  });
+  $("#kslider").slider({
+    max:9000,
+    min: 3500,
+    slide: slideChange,
+    change: slideChange
+  });
+
+  slideChange();
+
+});
+
+HSBToRGB = function (inh, ins, inb) {
+    var rgb = {};
+    var h = Math.round(inh);
+    var s = Math.round(ins * 255 / 100);
+    var v = Math.round(inb * 255 / 100);
+    if (s == 0) {
+        rgb.r = rgb.g = rgb.b = v;
+    } else {
+        var t1 = v;
+        var t2 = (255 - s) * v / 255;
+        var t3 = (t1 - t2) * (h % 60) / 60;
+        if (h == 360) h = 0;
+        if (h < 60) { rgb.r = t1; rgb.b = t2; rgb.g = t2 + t3 }
+        else if (h < 120) { rgb.g = t1; rgb.b = t2; rgb.r = t1 - t3 }
+        else if (h < 180) { rgb.g = t1; rgb.r = t2; rgb.b = t2 + t3 }
+        else if (h < 240) { rgb.b = t1; rgb.r = t2; rgb.g = t1 - t3 }
+        else if (h < 300) { rgb.b = t1; rgb.g = t2; rgb.r = t2 + t3 }
+        else if (h < 360) { rgb.r = t1; rgb.g = t2; rgb.b = t1 - t3 }
+        else { rgb.r = 0; rgb.g = 0; rgb.b = 0 }
+    }
+    return { r: Math.round(rgb.r), g: Math.round(rgb.g), b: Math.round(rgb.b) };
+}
+
+function hexFromRGB(r, g, b) {
+    var hex = [
+      r.toString( 16 ),
+      g.toString( 16 ),
+      b.toString( 16 )
+    ];
+    $.each( hex, function( nr, val ) {
+      if ( val.length === 1 ) {
+        hex[ nr ] = "0" + val;
+      }
+    });
+    return hex.join( "" ).toUpperCase();
+  }
+
+function slideChange() {
+  var hv = $("#hslider").slider("value");
+  var sv = $("#sslider").slider("value");
+  var bv = $("#bslider").slider("value");
+  var kv = $("#kslider").slider("value");
+  $("#hv").text("H:"+hv);
+  $("#sv").text("S:"+sv);
+  $("#bv").text("B:"+bv);
+  $("#kv").text("K:"+kv);
+
+  var rgbtext = HSBToRGB((hv*359/65535), (sv*100/65535), (bv*100/65535));
+  var hextext = hexFromRGB(rgbtext.r, rgbtext.g, rgbtext.b);
+
+  $("#swath").css("background-color", "#"+hextext);
+  $("swath").text("#"+hexFromRGB(rgbtext.r, rgbtext.g, rgbtext.b));
+  $.post( "172.27.99.15:80/color?h="+hv+"&s="+sv+"&b="bv+"&k="+kv } );
+
+}
+</script>
+<div id="container">
+  <div id="hslider"></div>
+  <div id="hv">H:0</div>
+  <div id="sslider"></div>
+  <div id="sv">S:0</div>
+  <div id="bslider"></div>
+  <div id="bv">B:0</div>
+  <div id="kslider"></div>
+  <div id="kv">K:3500</div>
+  <div id="swath"></div>
+</div>
