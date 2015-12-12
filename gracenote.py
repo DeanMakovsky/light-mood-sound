@@ -32,7 +32,7 @@ class MoodEvent(object):
 			return False
 
 		data = req.json()
-		# print data
+		print data
 		if data['job_status'] == '1':
 			# features = data['features']
 			# print features['meta']['bpm']
@@ -49,6 +49,9 @@ class MoodEvent(object):
 			# print "another one"
 			time.sleep(1)
 		t_done = time.time()
+		self.features = eval(self.results['features'])  # because they messed up their json
+		if len(self.features['timeline']['mood']) == 0:
+			raise ValueError("No mood data in response.")
 		# print self.results
 		# print "Took " + str(t_done - t_submit) + " seconds"
 
@@ -56,9 +59,8 @@ class MoodEvent(object):
 		if self.latest_mood is not None:
 			return self.latest_mood
 		# extract information
-		features = eval(self.results['features'])  # because they messed up their json
-		moods = features['timeline']['mood']
-		self.bpm = features['meta']['bpm']  # float
+		moods = self.features['timeline']['mood']
+		self.bpm = self.features['meta']['bpm']  # float
 		# [ { 'values' : list, 'start', 'end' } , {}, ... ]
 
 		# find the latest mood that is longer than 1.5 seconds
@@ -80,7 +82,7 @@ class MoodEvent(object):
 		return self.bpm
 
 if __name__ == "__main__":
-	me = MoodEvent('file.mp3')
+	me = MoodEvent('sound-short.wav')
 	me.submit()
 	try :
 		me.retrieve_results()
