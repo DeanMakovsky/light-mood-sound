@@ -5,8 +5,14 @@ import lifx
 
 urls = (
     "/color", "colorme",
+    "/", "index"
 )
 
+render = web.template.render('')
+
+class index:
+    def GET(self, name):
+        return render.index()
 
 class colorme:
     def GET(self):
