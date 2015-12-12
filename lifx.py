@@ -2,7 +2,7 @@ import bitstring
 from bitstring import BitArray
 
 
-DELAY = 10
+DELAY = 3000 # milliseconds
 KELVIN = 3500
 
 def make_frame():  # and frame address

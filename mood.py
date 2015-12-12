@@ -104,36 +104,28 @@ mood2color["dignified"]="purple"
 mood2color["distressed"]="orange"
 mood2color["exciting"]="red"
 mood2color["melancholy"]="purpleblue"
-mood2color["powerful"]="red"
-mood2color["protective"]="red"
+mood2color["powerful"]="crimson"
+mood2color["protective"]="coral"
 mood2color["secure"]="blue"
-mood2color["tender"]="blue"
-mood2color[""]=""
+mood2color["tender"]="cyan"
+mood2color[""]="white"
 
-from random import random
-def rando():
-	return ( int(random() * 65535) , int(random() * 65535) , int(random() * 65535), int(random() * 6500 + 2500) )
+# from random import random
+# def rando():
+# 	return ( int(random() * 65535) , int(random() * 65535) , int(random() * 65535), int(random() * 6500 + 2500) )
 
-color2hsb["green"]=rando()
-color2hsb["yellow"]=rando()
-color2hsb["redorange"]=rando()
-color2hsb["purple"]=rando()
-color2hsb["orange"]=rando()
-color2hsb["red"]=rando()
-color2hsb["purpleblue"]=rando()
-color2hsb["blue"]=rando()
-color2hsb[""]=rando()
-
-# color2hsb["green"]=0,65535,52428,2500
-# color2hsb["yellow"]=0,65535,52428,3000
-# color2hsb["redorange"]=0,65535,52428,3500
-# color2hsb["purple"]=0,65535,52428,4000
-# color2hsb["orange"]=0,65535,52428,4500
-# color2hsb["red"]=0,65535,52428,5000
-# color2hsb["purpleblue"]=0,65535,52428,5500
-# color2hsb["blue"]=0,65535,52428,9000
-# color2hsb[""]=1200,35005,30028,9000
-
+color2hsb["green"]=23189,65535,35031,9000
+color2hsb["yellow"]=10758,65535,32276,3310
+color2hsb["orange"]=6550,65535,40796,2500
+color2hsb["redorange"]=5251,64552,40796,2500
+color2hsb["crimson"]=65535,65535,65535,3500
+color2hsb["red"]=63356,62322,55766,2500
+color2hsb["coral"]=65535,24430,35361,3500
+color2hsb["purple"]=53494,65535,35361,3500
+color2hsb["purpleblue"]=49781,65535,35361,3500
+color2hsb["blue"]=43589,65535,44482,9000
+color2hsb["cyan"]=32241,65535,33738,3500
+color2hsb["white"]=0,0,27246,4723
 
 
 if __name__ == "__main__":
