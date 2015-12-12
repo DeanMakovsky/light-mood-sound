@@ -1,5 +1,5 @@
 <!-- LIght control -->
-<link href="resources/jquery-ui.min.css" rel="stylesheet">
+<!--<link href="resources/jquery-ui.min.css" rel="stylesheet">-->
 <style>
 body {
   font-size: 20px;
@@ -16,8 +16,11 @@ body {
   height: 100px;
 }
 </style>
-<script src="resources/jquery-1.11.3.min.js"></script>
-<script src="resources/jquery-ui.min.js"></script>
+<!--<script src="resources/jquery-1.11.3.min.js"></script>
+<script src="resources/jquery-ui.min.js"></script>-->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script>
 jQuery(document).ready(function() {
   jQuery("#hslider").slider({
@@ -83,7 +86,7 @@ function hexFromRGB(r, g, b) {
         haxarr[ nr ] = "0" + val;
       }
     });
-    return (haxarr[0].toString()+haxarr[1].toString()+haxarr[2].toString()).toUpperCase());
+    return haxarr.join( "" ).toUpperCase();
   }
 
 function slideChange() {
