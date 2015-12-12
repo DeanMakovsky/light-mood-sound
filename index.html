@@ -83,7 +83,7 @@ function hexFromRGB(r, g, b) {
         hex[ nr ] = "0" + val;
       }
     });
-    return hex.join( "" ).toUpperCase();
+    return (hex[0].toString()+hex[1].toString()+hex[2].toString()).toUpperCase();
   }
 
 function slideChange() {
