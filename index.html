@@ -43,7 +43,7 @@ jQuery(document).ready(function() {
   });
   jQuery("#kslider").slider({
     max:9000,
-    min: 3500,
+    min: 2500,
     slide: slideChange,
     change: slideChange
   });
@@ -104,8 +104,8 @@ function slideChange() {
 
   jQuery("#swath").css("background-color", "#"+hextext);
   jQuery("swath").text("#"+hexFromRGB(rgbtext.r, rgbtext.g, rgbtext.b));
-  var myurl = "http://localhost/color?h="+hv+"&s="+sv+"&b="+bv+"&k="+kv;
-  jQuery.post(myurl, function(data) {alert("suggess")});
+  var myurl = "http://10.42.0.206/color?h="+hv+"&s="+sv+"&b="+bv+"&k="+kv;
+  jQuery.get(myurl);
 
 }
 </script>
@@ -117,6 +117,6 @@ function slideChange() {
   <div id="bslider"></div>
   <div id="bv">B:0</div>
   <div id="kslider"></div>
-  <div id="kv">K:3500</div>
+  <div id="kv">K:2500</div>
   <div id="swath"></div>
 </div>
