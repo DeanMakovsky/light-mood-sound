@@ -5,6 +5,8 @@ import signal
 import sys
 import os
 import collections
+from gracenote import MoodEvent
+
 
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
@@ -62,9 +64,16 @@ def update():
 		dataList = list(frames)
 		export(dataList)
 		# do GraceNote and Lightbulb stuff
-
+		me = MoodEvent(FILENAME)
+		me.submit()
+		try :
+			me.retrieve_results()
+			print "Got results"
+		except ValueError as e:
+			print e, 'with', me.filename
+		print me.get_bpm(), me.get_mood_label()
 		# play audio for testing
-		playAudio(FILENAME)
+		# playAudio(FILENAME)
 
 def doInExternalThread(func):
 	t = threading.Thread(target = func)
