@@ -73,17 +73,17 @@ HSBToRGB = function (inh, ins, inb) {
 }
 
 function hexFromRGB(r, g, b) {
-    var hex = [
+    var haxarr = [
       r.toString( 16 ),
       g.toString( 16 ),
       b.toString( 16 )
     ];
-    $.each( hex, function( nr, val ) {
+    $.each( haxarr, function( nr, val ) {
       if ( val.length === 1 ) {
-        hex[ nr ] = "0" + val;
+        haxarr[ nr ] = "0" + val;
       }
     });
-    return (hex[0].toString()+hex[1].toString()+hex[2].toString()).toUpperCase();
+    return (haxarr[0].toString()+haxarr[1].toString()+haxarr[2].toString()).toUpperCase());
   }
 
 function slideChange() {
