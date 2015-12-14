@@ -125,7 +125,7 @@ color2hsb["purple"]=53494,65535,35361,3500
 color2hsb["purpleblue"]=49781,65535,35361,3500
 color2hsb["blue"]=43589,65535,44482,9000
 color2hsb["cyan"]=32241,65535,33738,3500
-color2hsb["white"]=0,0,27246,4723
+color2hsb["white"]=0,0,20000,4723
 
 
 if __name__ == "__main__":
